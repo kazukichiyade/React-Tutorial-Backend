@@ -1,0 +1,13 @@
+{
+  "name": "React-Tutorial-Backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/kazukichiyade/React-Tutorial-Backend.git",
+  "author": "kazukichi",
+  "license": "MIT"
+}
