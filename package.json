@@ -9,5 +9,8 @@
   },
   "repository": "https://github.com/kazukichiyade/React-Tutorial-Backend.git",
   "author": "kazukichi",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
