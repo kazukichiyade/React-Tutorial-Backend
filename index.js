@@ -6,6 +6,8 @@ const app = express();
 // データに簡単にアクセスする
 const bodyParser = require('body-parser');
 
+app.use(bodyParser.json());
+
 let notes = [
   {
     id: 1,
@@ -61,11 +63,19 @@ app.get('/notes/:id', (req, res) => {
   }
 });
 
+// 指定したIDのnotesを削除
 app.delete('/notes/:id', (request, response) => {
   const id = Number(request.params.id);
   notes = notes.filter(note => note.id !== id);
 
   response.status(204).end();
+});
+
+app.post('/notes', (request, response) => {
+  // bodyParser使用によりbodyにアクセスできる
+  const note = request.body;
+  console.log(note);
+  response.json(note);
 });
 
 const PORT = 3001;
