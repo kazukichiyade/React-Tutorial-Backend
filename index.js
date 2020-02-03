@@ -3,10 +3,12 @@
 // Expressアプリケーションを作成するために使用される関数
 const express = require('express');
 const app = express();
+// データに簡単にアクセスする
+const bodyParser = require('body-parser');
 
 let notes = [
   {
-    id: 6463,
+    id: 1,
     content: 'HTML is easy',
     date: '2019-05-30T17:30:31.098Z',
     important: true
@@ -32,14 +34,38 @@ let notes = [
 //   response.end(JSON.stringify(notes));
 // });
 
+// Hello Worldの文字を出力
 app.get('/', (req, res) => {
   // send(stringを含む応答を送信)
   res.send('<h1>Hello World!!!</h1>');
 });
 
-app.get('/notes', (req, res) => {
-  // JSON形式の文字列として渡されたnotes配列が送信
-  res.json(notes);
+// notesをjson形式で出力
+app.get('/notes', (request, response) => {
+  response.json(notes);
+});
+
+// 指定したIDで出力
+app.get('/notes/:id', (req, res) => {
+  // ID要求(request)
+  const id = Number(req.params.id);
+  // 要求したIDの内容を返す(response)
+  const note = notes.find(note => note.id === id);
+  // JSON形式として渡されたnoteを返す
+  if (note) {
+    res.json(note);
+  } else {
+    // ステータスを設定するためにstatusメソッドを使用
+    // データを送信せずにリクエストに応答するためのendメソッド
+    res.status(404).end();
+  }
+});
+
+app.delete('/notes/:id', (request, response) => {
+  const id = Number(request.params.id);
+  notes = notes.filter(note => note.id !== id);
+
+  response.status(204).end();
 });
 
 const PORT = 3001;
