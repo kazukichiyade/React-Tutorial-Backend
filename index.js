@@ -37,9 +37,36 @@ let notes = [
 // });
 
 // Hello Worldの文字を出力
-app.get('/', (req, res) => {
+app.get('/', (request, response) => {
   // send(stringを含む応答を送信)
-  res.send('<h1>Hello World!!!</h1>');
+  response.send('<h1>Hello World!!!</h1>');
+});
+
+const generateId = () => {
+  // 全てのnotesの新しい配列として保存して、最大のにIDに+1して作成
+  const maxId = notes.length > 0 ? Math.max(...notes.map(n => n.id)) : 0;
+  return maxId + 1;
+};
+
+// 新しいノートを送信
+app.post('/notes', (request, response) => {
+  // bodyParser使用によりbodyにアクセスできる
+  const note = request.body;
+  // コンテンツが無い場合
+  if (!body.content) {
+    return response.status(400).json({
+      error: 'content missing'
+    });
+  }
+  const note = {
+    content: body.content,
+    // デフォルトfalse指定
+    important: body.important || false,
+    date: new Date(),
+    id: generateId()
+  };
+  notes = notes.concat(note);
+  response.json(note);
 });
 
 // notesをjson形式で出力
@@ -48,18 +75,18 @@ app.get('/notes', (request, response) => {
 });
 
 // 指定したIDで出力
-app.get('/notes/:id', (req, res) => {
+app.get('/notes/:id', (request, response) => {
   // ID要求(request)
-  const id = Number(req.params.id);
+  const id = Number(request.params.id);
   // 要求したIDの内容を返す(response)
   const note = notes.find(note => note.id === id);
   // JSON形式として渡されたnoteを返す
   if (note) {
-    res.json(note);
+    response.json(note);
   } else {
     // ステータスを設定するためにstatusメソッドを使用
     // データを送信せずにリクエストに応答するためのendメソッド
-    res.status(404).end();
+    response.status(404).end();
   }
 });
 
@@ -69,13 +96,6 @@ app.delete('/notes/:id', (request, response) => {
   notes = notes.filter(note => note.id !== id);
 
   response.status(204).end();
-});
-
-app.post('/notes', (request, response) => {
-  // bodyParser使用によりbodyにアクセスできる
-  const note = request.body;
-  console.log(note);
-  response.json(note);
 });
 
 const PORT = 3001;
