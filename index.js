@@ -3,10 +3,12 @@
 // Expressアプリケーションを作成するために使用される関数
 const express = require('express');
 const app = express();
+const cors = require('cors');
 // データに簡単にアクセスする
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
+app.use(cors());
 
 let notes = [
   {
@@ -51,7 +53,7 @@ const generateId = () => {
 // 新しいノートを送信
 app.post('/notes', (request, response) => {
   // bodyParser使用によりbodyにアクセスできる
-  const note = request.body;
+  const body = request.body;
   // コンテンツが無い場合
   if (!body.content) {
     return response.status(400).json({
@@ -98,7 +100,7 @@ app.delete('/notes/:id', (request, response) => {
   response.status(204).end();
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 // appサーバをバインドしHTTPリクエスト要求をこなす
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
