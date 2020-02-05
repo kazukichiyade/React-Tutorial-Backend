@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 app.use(cors());
+// 静的コンテンツ、ページindex.html、およびそれがフェッチするJavaScriptなどを表示
+app.use(express.static('build'));
 
 let notes = [
   {
